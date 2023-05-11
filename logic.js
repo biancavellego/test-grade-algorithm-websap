@@ -22,44 +22,21 @@ const randomIntArrayInRange = (min, max, n = 1) =>
     () => Math.floor(Math.random() * (max - min + 1)) + min
   );
 
+
 function gradingAlgorithm(applicantAnswersArray, applicant) {
     const correctAnswers = randomIntArrayInRange(1, 5, 10);
     let applicantGrade = 10;
-    let result = `${applicant} final grade: `;
-
-    if(applicantAnswersArray.length <= 10) {
-        for(let i = 0; i <= applicantAnswersArray.length; i++) {
-            const applicantAnswer = applicantAnswersArray[i];
-            
-            for (let j = 0; j < correctAnswers.length; j++) {
-                const correctAnswer = correctAnswers[j];
-    
-                if(applicantAnswersArray.length === 10){
-                    if(applicantAnswer === correctAnswer) {
-                        applicantGrade += 1;
-                        return result + `${applicantGrade}`;
-                    }
-                    applicantGrade -= 1;
-                    return result + `${applicantGrade}`;
-                }
-                if(applicantAnswersArray.length < 10){
-                    const unansweredQuestions = 10 - applicantAnswersArray.length
-                    // if appl = 10 and unQ = 9 and if answer is right, then applGrade = 1 + 1
-                    applicantGrade = applicantGrade - unansweredQuestions - 1
-                    if(applicantAnswer === correctAnswer) {
-                        applicantGrade += 1;
-                        return result + `${applicantGrade}`;
-                    }
-                    if(applicantGrade === 0) {
-                        applicantGrade = 0;
-                        return result + `${applicantGrade}`;
-                    }
-                    applicantGrade -= 1;
-                    return result + `${applicantGrade}`;
-                }
-            }
-        }
+  
+    for (let i = 0; i < 10; i++) {
+      if (applicantAnswersArray[i] === undefined) {
+        applicantGrade -= 1;
+      } else if (applicantAnswersArray[i] !== correctAnswers[i]) {
+        applicantGrade -= 1;
+      }
     }
+    applicantGrade = Math.max(applicantGrade, 0);
+  
+    return `${applicant}'s final grade: ${applicantGrade}`;
 }
 
-console.log(gradingAlgorithm([1], "Mr Doe"))
+console.log(gradingAlgorithm([1, 1, 1], "Mr Doe"))
